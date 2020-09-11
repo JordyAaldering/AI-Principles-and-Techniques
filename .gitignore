@@ -1,1 +1,8 @@
+# IntelliJ cache
+.idea/
 
+# User specific files
+*.iml
+
+# Build results
+out/
