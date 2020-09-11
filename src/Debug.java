@@ -9,7 +9,7 @@ public class Debug {
     public static void enable() {
         enabled = true;
         Logger logger = Logger.getLogger("Debug");
-        logger.info("Debugger enabled.");
+        logger.info("Debugger enabled\n");
         logger.setLevel(Level.WARNING);
     }
 

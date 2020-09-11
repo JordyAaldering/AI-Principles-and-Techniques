@@ -6,25 +6,20 @@ public class MST {
 
     static final int INF = Integer.MAX_VALUE;
 
-    public int count;
+    public int count = 0;
     public Vertex[] vertices;
-    public int root;
+    public int root = 0;
 
     public MST(int[][] graph, int root) {
         if (graph.length == 0) {
-            Debug.warn("Input graph is empty.");
-            count = 0;
+            Debug.warn("Input graph is empty");
             vertices = new Vertex[0];
-            root = 0;
             return;
         }
 
         setVertices(graph);
         setRoot(root);
         setNeighbours(graph);
-
-        Debug.trace("Initial graph:");
-        Debug.trace(toString());
     }
 
     private void setVertices(int[][] graph) {
@@ -37,7 +32,7 @@ public class MST {
 
     private void setRoot(int root) {
         if (root >= count) {
-            Debug.warn("Root '" + root + "' is out of range.");
+            Debug.warn("Root '" + root + "' is out of range");
             Debug.info("Clamping root between 0 and " + (count - 1));
             root = Math.max(0, Math.min(root, count - 1));
         }
@@ -46,23 +41,15 @@ public class MST {
     }
 
     private void setNeighbours(int[][] graph) {
-        int weight;
-        Edge edge;
-
         for (int i = 0; i < count; i++) {
             // The graph is assumed to be undirected,
             // so we only look to the top right of the diagonal.
             for (int j = 0; j < i; j++) {
-                weight = graph[i][j];
+                int weight = graph[i][j];
                 if (weight == 0) continue;
 
-                // Add an edge from i to j.
-                edge = new Edge(graph[i][j], vertices[j]);
-                vertices[i].neighbours.add(edge);
-
-                // Add an edge from j to i.
-                edge = new Edge(graph[i][j], vertices[i]);
-                vertices[j].neighbours.add(edge);
+                vertices[i].neighbours.add(new Edge(weight, vertices[j]));
+                vertices[j].neighbours.add(new Edge(weight, vertices[i]));
             }
         }
     }
@@ -82,8 +69,8 @@ public class MST {
 
         @Override
         public String toString() {
-            return parent == null ? "Root is " + label
-                    : "Edge from " + parent.label + " to " + label;
+            return parent == null ? String.format("Vertex %s", label)
+                    : String.format("Vertex %s has parent %s", label, parent.label);
         }
     }
 
@@ -99,15 +86,14 @@ public class MST {
 
         @Override
         public String toString() {
-            return "Edge with weight " + weight + " to " + to;
+            return String.format("Edge to %s with weight %d", to, weight);
         }
     }
 
     @Override
     public String toString() {
-        return Arrays.stream(vertices)
-                .map(v -> String.valueOf(v) + '\n')
-                .collect(Collectors.joining());
+        return Arrays.stream(vertices).map(Vertex::toString)
+                .collect(Collectors.joining("\n"));
     }
 
 }
