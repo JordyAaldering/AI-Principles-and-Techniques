@@ -4,8 +4,7 @@ public class Prims {
 
     private static MST.Vertex extractMin(MST mst) {
         int key = MST.INF;
-        // Set min = root for first iteration
-        MST.Vertex min = mst.vertices[mst.root];
+        MST.Vertex min = null;
 
         for (var vertex : mst.vertices) {
             if (!vertex.included // The vertex is not yet in the MST
@@ -15,6 +14,7 @@ public class Prims {
             }
         }
 
+        assert min != null : "No vertex was found";
         min.included = true;
         return min;
     }
@@ -30,8 +30,10 @@ public class Prims {
         }
     }
 
-    static MST run(int[][] graph, int root) {
-        MST mst = new MST(graph, root);
+    static MST run(int[][] graph) {
+        MST mst = new MST(graph);
+        mst.vertices[0].key = 0;
+
         for (int i = 0; i < mst.count - 1; i++) {
             MST.Vertex min = extractMin(mst);
             updateNeighbours(min);

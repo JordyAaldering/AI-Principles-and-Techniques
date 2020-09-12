@@ -8,54 +8,36 @@ public class MST {
 
     public int count = 0;
     public Vertex[] vertices;
-    public int root = 0;
 
-    public MST(int[][] graph, int root) {
+    /**
+     * Initializes a new Minimum Spanning Tree.
+     * @param graph An adjacency matrix representation of an undirected graph.
+     */
+    public MST(int[][] graph) {
         if (graph.length == 0) {
-            Debug.warn("Input graph is empty");
             vertices = new Vertex[0];
             return;
         }
 
-        setVertices(graph);
-        setRoot(root);
-        setNeighbours(graph);
-    }
-
-    private void setVertices(int[][] graph) {
         count = Math.min(graph.length, graph[0].length);
         vertices = new Vertex[count];
         for (int i = 0; i < count; i++) {
             vertices[i] = new Vertex();
         }
-    }
 
-    private void setRoot(int root) {
-        if (root >= count) {
-            Debug.warn("Root '" + root + "' is out of range");
-            Debug.info("Clamping root between 0 and " + (count - 1));
-            root = Math.max(0, Math.min(root, count - 1));
-        }
-
-        vertices[root].key = 0;
-    }
-
-    private void setNeighbours(int[][] graph) {
-        for (int i = 0; i < count; i++) {
-            // The graph is assumed to be undirected,
-            // so we only look to the top right of the diagonal.
+        // The graph is assumed to be undirected,
+        // so we only look to the top right of the diagonal.
+        for (int i = 1; i < count; i++) {
             for (int j = 0; j < i; j++) {
-                int weight = graph[i][j];
-                if (weight == 0) continue;
-
-                vertices[i].neighbours.add(new Edge(weight, vertices[j]));
-                vertices[j].neighbours.add(new Edge(weight, vertices[i]));
+                if (graph[i][j] == 0) continue; // There is no edge
+                vertices[i].neighbours.add(new Edge(graph[i][j], vertices[j]));
+                vertices[j].neighbours.add(new Edge(graph[i][j], vertices[i]));
             }
         }
     }
 
     static class Vertex {
-        private static char currentLabel = 'a';
+        private static char currentChar = 'a';
         public final char label;
 
         public int key = INF;
@@ -64,7 +46,7 @@ public class MST {
         public LinkedList<Edge> neighbours = new LinkedList<>();
 
         Vertex() {
-            label = currentLabel++;
+            label = currentChar++;
         }
 
         @Override
