@@ -9,7 +9,7 @@ public class Main {
                 { 0, 2, 1, 0, 0 },
         };
 
-        MST mst = Prims.run(graph);
+        var mst = Prims.run(graph);
         System.out.println("MST:\n" + mst);
     }
 
