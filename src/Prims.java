@@ -108,7 +108,7 @@ public class Prims {
         }
     }
 
-    static MST run(int[][] graph) {
+    static MST calculateMST(int[][] graph) {
         MST mst = new MST(graph);
         mst.vertices[0].key = 0;
 
