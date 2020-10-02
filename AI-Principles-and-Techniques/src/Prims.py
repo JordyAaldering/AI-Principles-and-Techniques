@@ -2,45 +2,41 @@ from typing import List
 
 from sys import maxsize as Inf
 
-class Prims:
+Graph = List[List[int]]
 
-    Graph = List[List[int]]
-
-    def __init__(self, graph: Graph):
-        self.graph = graph
-        self.size = len(graph)
-
-        self.keys = [Inf] * self.size
-        self.parents = [None] * self.size
-        self.in_mst = [False] * self.size
-        
-        self.calculate_mst()
-        
-    def calculate_mst(self):
-        self.keys[0] = 0
-        self.parents[0] = -1
+def prims_mst(graph: Graph, root: int = 0) -> List[int]:
+    size = len(graph)
+    keys = [Inf] * size
+    parents = [None] * size
+    in_mst = [False] * size
+    
+    keys[root] = 0
+    parents[root] = -1
  
-        for _ in range(self.size):
-            u = self.extract_min()
+    for _ in range(size):
+        u = extract_min(keys, in_mst)
 
-            for v in range(self.size):
-                if not self.in_mst[v] and self.graph[u][v] > 0 and self.keys[v] > self.graph[u][v]:
-                    self.keys[v] = self.graph[u][v]
-                    self.parents[v] = u
+        for v in range(size):
+            if not in_mst[v] and graph[u][v] > 0 and keys[v] > graph[u][v]:
+                keys[v] = graph[u][v]
+                parents[v] = u
 
-    def extract_min(self) -> int:
-        min = Inf
-        min_index = -1
+    return parents
+
+def extract_min(keys: List[int], in_mst: List[bool]) -> int:
+    min = Inf
+    min_index = -1
  
-        for v in range(self.size):
-            if not self.in_mst[v] and self.keys[v] < min:
-                min = self.keys[v]
-                min_index = v
+    for v in range(len(keys)):
+        if not in_mst[v] and keys[v] < min:
+            min = keys[v]
+            min_index = v
  
-        self.in_mst[min_index] = True
-        return min_index
+    in_mst[min_index] = True
+    return min_index
 
-    def print_mst(self) -> None:
-        print("Edge\t Weight")
-        for i in range(1, self.size):
-            print(self.parents[i], "-", i, "\t", self.graph[i][self.parents[i]])
+def print_mst(graph: Graph, parents: List[int]) -> None:
+    print("Edge\t Weight")
+    for i in range(len(graph)):
+        if parents[i] >= 0:
+            print(parents[i], "to", i, "\t", graph[i][parents[i]])
