@@ -1,8 +1,5 @@
-# IntelliJ cache
-.idea/
-
 # User specific files
-*.iml
-
-# Build results
-out/
+*.vs
+*.sln
+*.pyproj
+*.pyproj.user
