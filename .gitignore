@@ -3,3 +3,6 @@
 *.sln
 *.pyproj
 *.pyproj.user
+
+# Cache
+*.pyc
