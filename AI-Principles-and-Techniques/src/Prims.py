@@ -1,8 +1,6 @@
-from typing import List
+from Graph import *
 
 from sys import maxsize as Inf
-
-Graph = List[List[int]]
 
 def prims_mst(graph: Graph, root: int = 0) -> List[int]:
     size = len(graph)
