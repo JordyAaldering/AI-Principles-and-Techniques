@@ -5,12 +5,11 @@ from sys import maxsize as Inf
 def prims_mst(graph: Graph, root: int = 0) -> List[int]:
     size = len(graph)
     keys = [Inf] * size
-    parents = [None] * size
+    parents = [-1] * size
     in_mst = [False] * size
     
     keys[root] = 0
-    parents[root] = -1
- 
+
     for _ in range(size):
         u = extract_min(keys, in_mst)
 
@@ -22,12 +21,12 @@ def prims_mst(graph: Graph, root: int = 0) -> List[int]:
     return parents
 
 def extract_min(keys: List[int], in_mst: List[bool]) -> int:
-    min = Inf
+    min_weight = Inf
     min_index = -1
  
     for v in range(len(keys)):
-        if not in_mst[v] and keys[v] < min:
-            min = keys[v]
+        if not in_mst[v] and keys[v] < min_weight:
+            min_weight = keys[v]
             min_index = v
  
     in_mst[min_index] = True
