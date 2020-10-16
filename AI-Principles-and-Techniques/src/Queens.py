@@ -2,7 +2,7 @@ from pulp import *
 
 N = 8
 
-prob = LpProblem(f"{N}_Queens", LpMaximize)
+prob = LpProblem(f"{N}_Queens")
 board = [[LpVariable(f"{x},{y}", cat=LpBinary) for x in range(N)] for y in range(N)]
 
 for i in range(N):
