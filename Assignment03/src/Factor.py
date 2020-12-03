@@ -13,7 +13,7 @@ class Factor:
     @staticmethod
     def make_factors(var, network, evidence):
         print("Make factors for", var, "with evidence", evidence)
-        variables = network.parents[var]
+        variables = network.values[var]
         variables.sort()
 
         allvars = copy.deepcopy(network.parents[var])
