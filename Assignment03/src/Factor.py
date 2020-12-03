@@ -13,7 +13,7 @@ class Factor:
 
     @staticmethod
     def make_factors(var, network, evidence):
-        printf("Make factors for", var, "with evidence", evidence)
+        print("Make factors for", var, "with evidence", evidence)
         variables = network.values[var]
         variables.sort()
 
