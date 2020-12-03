@@ -24,7 +24,7 @@ class VariableElim:
         Output: A variable holding the probability distribution
                 for the query variable
         """
-        eliminated = set()
+        eliminated = []
         factors = []
 
         while len(eliminated) < len(self.network.nodes):
@@ -34,7 +34,7 @@ class VariableElim:
             if var != query and var not in evidence:
                 factors = Factor.sum_out(var, factors)
 
-            eliminated.add(var)
+            eliminated.append(var)
             
         if len(factors) >= 2:
             result = factors[0]
