@@ -4,6 +4,16 @@ import itertools
 class Factor:
 
     @staticmethod
+    def query_given(network, Y, e):
+        if network.probabilities[Y] != -1:
+            prob = network.probabilities[Y] if e[Y] else 1 - network.probabilities[Y]
+        else:
+            parents = tuple(e[p] for p in network.parents[Y])
+            prob = network.parents[Y][1] if e[Y] else 1 - network.parents[Y][1]
+
+        return prob
+
+    @staticmethod
     def make_factors(var, network, evidence):
         variables = network.values[var]
         variables.sort()
@@ -27,7 +37,7 @@ class Factor:
                 continue
 
             key = tuple(asg[v] for v in variables)
-            prob = self.query_given(var, asg)
+            prob = self.query_given(network, var, asg)
             entries[key] = prob
 
         return (variables, entries)
