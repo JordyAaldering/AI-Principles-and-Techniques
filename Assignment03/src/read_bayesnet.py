@@ -1,10 +1,3 @@
-"""
-@Author: Joris van Vugt, Moira Berens, Leonieke van den Bulk
-
-Representation of a Bayesian network read in from a .bif file.
-
-"""
-
 import pandas as pd
 
 class BayesNet():
@@ -15,7 +8,6 @@ class BayesNet():
 
     Uses pandas DataFrames for representing conditional probability tables
     """
-
     # Possible values per variable
     values = {}
 
@@ -28,7 +20,6 @@ class BayesNet():
     def __init__(self, filename):
         """
         Construct a bayesian network from a .bif file
-
         """
         with open(filename, 'r') as file:
             line_number = 0
@@ -45,7 +36,6 @@ class BayesNet():
         """
         Parse the probability distribution
         """
-
         # get line
         line = open(filename, 'r').readlines()[line_number]
 

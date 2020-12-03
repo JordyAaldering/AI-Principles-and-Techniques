@@ -1,17 +1,9 @@
-"""
-@Author: Joris van Vugt, Moira Berens, Leonieke van den Bulk
-
-Class for the implementation of the variable elimination algorithm.
-
-"""
-
 class VariableElimination():
 
     def __init__(self, network):
         """
         Initialize the variable elimination algorithm with the specified network.
         Add more initializations if necessary.
-
         """
         self.network = network
 
@@ -29,5 +21,4 @@ class VariableElimination():
 
         Output: A variable holding the probability distribution
                 for the query variable
-
         """
