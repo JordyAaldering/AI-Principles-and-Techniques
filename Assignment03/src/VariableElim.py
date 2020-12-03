@@ -28,7 +28,7 @@ class VariableElim:
         factors = []
 
         while len(eliminated) < len(self.network.nodes):
-            var = elim_order[0]
+            var = list(filter(lambda v: v not in eliminated, elim_order))[0]
             factors.append(Factor.make_factors(var, self.network, evidence))
 
             if var != query and var not in evidence:
