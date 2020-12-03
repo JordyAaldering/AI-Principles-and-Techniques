@@ -25,15 +25,8 @@ class Factor:
         asg = {}
         entries = {}
         for perm in perms:
-            violate = False
             for var, per in zip(allvars, perm):
-                if var in evidence and evidence[var] != per:
-                    violate = True
-                    break
                 asg[var] = per
-
-            if violate:
-                continue
 
             key = tuple(asg[v] for v in variables)
             prob = self.query_given(network, var, asg)
