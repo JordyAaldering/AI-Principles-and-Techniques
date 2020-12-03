@@ -37,11 +37,11 @@ class VariableElim:
 
             eliminated.add(var)
             
-            if len(factors) >= 2:
-                result = factors[0]
-                for factor in factors[1:]:
-                    result = Factor.point_wise(var, result, factor)
-            else:
-                result = factors[0]
+        if len(factors) >= 2:
+            result = factors[0]
+            for factor in factors[1:]:
+                result = Factor.point_wise(var, result, factor)
+        else:
+            result = factors[0]
 
-            return result
+        return result
