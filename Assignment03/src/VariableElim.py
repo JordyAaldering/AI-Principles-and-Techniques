@@ -7,14 +7,14 @@ class VariableElim:
         """
         self.network = network
 
-    def run(self, query, observed, elim_order):
+    def run(self, query, evidence, elim_order):
         """
         Use the variable elimination algorithm to find out the probability
         distribution of the query variable given the observed variables
 
         Input:
             query:      The query variable
-            observed:   A dictionary of the observed variables {variable: value}
+            evidence:   A dictionary of the observed variables {variable: value}
             elim_order: Either a list specifying the elimination ordering
                         or a function that will determine an elimination ordering
                         given the network during the run
@@ -31,15 +31,15 @@ class VariableElim:
 
             factorvars = {}
             for v in variables:
-                factorvars[v] = [p for p in self.network.parents[v] if p not in e]
-                if v not in e:
+                factorvars[v] = [p for p in self.network.parents[v] if p not in evidence]
+                if v not in evidence:
                     factorvars[v].append(v)
 
             var = sorted(factorvars.keys(), key=(lambda x: (len(factorvars[x]), x)))[0]
             if len(factorvars[var]) > 0:
-                factors.append(self.make_factor(var, factorvars, e))
+                factors.append(self.make_factor(var, factorvars, evidence))
 
-            if var != query and var not in e:
+            if var != query and var not in evidence:
                 factors = self.sum_out(var, factors)
 
             eliminated.add(var)
