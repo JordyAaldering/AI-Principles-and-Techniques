@@ -6,12 +6,10 @@ class Factor:
     @staticmethod
     def query_given(network, Y, e):
         if network.probabilities[Y] != -1:
-            prob = network.probabilities[Y] if e[Y] else 1 - network.probabilities[Y]
+            return network.probabilities[Y] if e[Y] else 1 - network.probabilities[Y]
         else:
             parents = tuple(e[p] for p in network.parents[Y])
-            prob = network.parents[Y][1] if e[Y] else 1 - network.parents[Y][1]
-
-        return prob
+            return network.parents[Y][1] if e[Y] else 1 - network.parents[Y][1]
 
     @staticmethod
     def make_factors(var, network, evidence):
@@ -49,6 +47,7 @@ class Factor:
         for comb in itertools.combinations_with_replacement([False, True], length):
             for perm in itertools.permutations(comb):
                 perms.add(perm)
+
         return list(perms)
 
     @staticmethod
