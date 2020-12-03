@@ -16,7 +16,7 @@ if __name__ == '__main__':
     print(net.probabilities)
 
     # Make your variable elimination code in the seperate file: 'variable_elim'
-    ve = VariableElimination(net)
+    ve = VariableElim(net)
 
     # Set the node to be queried
     query = 'Alarm'
