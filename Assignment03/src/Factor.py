@@ -14,7 +14,7 @@ class Factor:
     @staticmethod
     def make_factors(var, network, evidence):
         print("Make factors for", var, "with evidence", evidence)
-        variables = network.values[var]
+        variables = network.parents[var]
         variables.sort()
 
         allvars = copy.deepcopy(network.parents[var])
@@ -27,7 +27,7 @@ class Factor:
         for perm in perms:
             violate = False
             for var, per in zip(allvars, perm):
-                if var in evidence and evidence[var] != per:
+                if var in evidence:
                     violate = True
                     break
                 asg[var] = per
@@ -36,7 +36,7 @@ class Factor:
                 continue
 
             key = tuple(asg[v] for v in variables)
-            prob = self.query_given(network, var, asg)
+            prob = Factor.query_given(network, var, asg)
             entries[key] = prob
 
         return (variables, entries)
