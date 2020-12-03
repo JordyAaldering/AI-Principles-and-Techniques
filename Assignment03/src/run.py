@@ -31,4 +31,5 @@ if __name__ == '__main__':
     elim_order = net.nodes
 
     # Call the variable elimination function for the queried node given the evidence and the elimination ordering as follows:   
-    ve.run(query, evidence, elim_order)
+    result = ve.run(query, evidence, elim_order)
+    print("Result:\n", result)
