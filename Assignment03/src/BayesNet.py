@@ -1,6 +1,6 @@
 import pandas as pd
 
-class BayesNet():
+class BayesNet:
     """
     This class represents a Bayesian network.
     It can read files in a .bif format (if the formatting is
@@ -8,6 +8,7 @@ class BayesNet():
 
     Uses pandas DataFrames for representing conditional probability tables
     """
+
     # Possible values per variable
     values = {}
 

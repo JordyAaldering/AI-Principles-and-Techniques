@@ -1,4 +1,4 @@
-class VariableElimination():
+class VariableElim:
 
     def __init__(self, network):
         """
