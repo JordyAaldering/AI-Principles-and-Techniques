@@ -55,6 +55,7 @@ class Factor:
         for perm in perms:
             for pair in zip(newvariables, perm):
                 asg[pair[0]] = pair[1]
+
             key = tuple(asg[v] for v in newvariables)
             key1 = tuple(asg[v] for v in factor1[0])
             key2 = tuple(asg[v] for v in factor2[0])
