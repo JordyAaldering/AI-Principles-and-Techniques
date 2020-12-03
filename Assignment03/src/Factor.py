@@ -1,4 +1,4 @@
 class Factor:
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         pass
