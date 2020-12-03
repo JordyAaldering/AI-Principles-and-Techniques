@@ -1,3 +1,5 @@
+from Factor import Factor
+
 class VariableElim:
 
     def __init__(self, network):
@@ -26,37 +28,19 @@ class VariableElim:
         factors = []
 
         while len(eliminated) < len(self.network.nodes):
-            variables = filter(lambda v: v not in eliminated, self.network.nodes)
-            variables = filter(lambda v: all(c in eliminated for c in self.network.parents[v]), variables)
-
-            factorvars = {}
-            for v in variables:
-                factorvars[v] = [p for p in self.network.parents[v] if p not in evidence]
-                if v not in evidence:
-                    factorvars[v].append(v)
-
-            var = sorted(factorvars.keys(), key=(lambda x: (len(factorvars[x]), x)))[0]
-            if len(factorvars[var]) > 0:
-                factors.append(self.make_factor(var, factorvars, evidence))
+            
+            var = elim_order[0]
+            factors.append(Factor.make_factors(var, self.network, evidence))
 
             if var != query and var not in evidence:
-                factors = self.sum_out(var, factors)
+                factors = Factor.sum_out(var, factors)
 
             eliminated.add(var)
-            for factor in factors:
-                asg = {}
-                perms = list(self.gen_permutations(len(factors[0])))
-                perms.sort()
-
-                for perm in perms:
-                    for pair in zip(factor[0], perm):
-                        asg[pair[0]] = pair[1]
-                    key = tuple(asg[v] for v in factor[0])
-
+            
             if len(factors) >= 2:
                 result = factors[0]
                 for factor in factors[1:]:
-                    result = self.point_wise(var, result, factor)
+                    result = Factor.point_wise(var, result, factor)
             else:
                 result = factors[0]
 
