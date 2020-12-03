@@ -1,5 +1,5 @@
-import BayesNet
-import VariableElim
+from BayesNet import BayesNet
+from BayesNet import VariableElim
 
 if __name__ == '__main__':
     # The class BayesNet represents a Bayesian network from a .bif file in several variables
