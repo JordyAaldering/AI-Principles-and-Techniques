@@ -17,11 +17,11 @@ class Factor:
         entries = {}
         for perm in perms:
             violate = False
-            for pair in zip(allvars, perm):
-                if pair[0] in evidence and evidence[pair[0]] != pair[1]:
+            for var, per in zip(allvars, perm):
+                if var in evidence and evidence[var] != per:
                     violate = True
                     break
-                asg[pair[0]] = pair[1]
+                asg[var] = per
 
             if violate:
                 continue
@@ -53,8 +53,8 @@ class Factor:
         asg = {}
         newtable = {}
         for perm in perms:
-            for pair in zip(newvariables, perm):
-                asg[pair[0]] = pair[1]
+            for var, per in zip(newvariables, perm):
+                asg[var] = per
 
             key = tuple(asg[v] for v in newvariables)
             key1 = tuple(asg[v] for v in factor1[0])
