@@ -1,6 +1,6 @@
 import random
-from field import Field
 from action import Action
+from field import Field
 
 class MDP():
     deterministic = True
@@ -14,12 +14,18 @@ class MDP():
     no_reward = -0.04
 
     def __init__(self, width: int, height: int):
-        self.grid = [[Field.EMPTY for i in range(height)] for j in range(width)]
         self.width = width
         self.height = height
+        self.restart()
 
+    def restart(self):
+        self.grid = [[Field.EMPTY for i in range(self.height)]
+            for j in range(self.width)]
+        
         self.x_pos = 0
         self.y_pos = 0
+        self.terminated = False
+        self.actions_counter = 0
 
     def perform_action(self, action: Action) -> float:
         p = random.randrange(1.0)
@@ -33,6 +39,7 @@ class MDP():
             action = action.back_action()
         
         self.do_action(action)
+        self.actions_counter += 1
         return self.get_reward()
     
     def do_action(self, action: Action):
@@ -42,14 +49,18 @@ class MDP():
             self.y_pos += y
 
     def action_is_valid(self, action: Action) -> bool:
-        x, y = (self.x_pos, self.y_pos) + action.get_dir()
-        return 0 <= x < self.width and 0 <= y < self.height and self.grid[x, y] != Field.OBSTACLE
+        x, y = action.get_dir()
+        x += self.x_pos
+        y += self.y_pos
+        return 0 <= x < self.width and 0 <= y < self.height and self.grid[x][y] != Field.OBSTACLE
 
     def get_reward(self) -> float:
-        field = self.grid[self.x_pos, self.y_pos]
+        field = self.grid[self.x_pos][self.y_pos]
         if field == Field.EMPTY:
             return self.no_reward
         elif field == Field.REWARD:
+            self.terminated = True
             return self.pos_reward
         elif field == Field.NEG_REWARD:
+            self.terminated = True
             return self.neg_reward
