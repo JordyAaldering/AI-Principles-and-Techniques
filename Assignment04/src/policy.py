@@ -1,5 +1,7 @@
-from mdp import Mdp
+from mdp import MDP
+import numpy as np
 
 class Policy():
-    def __init__(self, mdp: Mdp):
-        self.grid = [row[:] for row in mdp.grid]
+    def __init__(self, mdp: MDP):
+        self.grid = [[-np.inf for i in range(mdp.width)]
+            for j in range(mdp.height)]

@@ -3,7 +3,7 @@ from action import Action
 from field import Field
 
 class MDP():
-    deterministic = True
+    deterministic = False
     p_perform = 0.7
     p_sidestep = 0.2
     p_backstep = 0.1
@@ -19,8 +19,8 @@ class MDP():
         self.restart()
 
     def restart(self):
-        self.grid = [[Field.EMPTY for i in range(self.height)]
-            for j in range(self.width)]
+        self.grid = [[Field.EMPTY for i in range(self.width)]
+            for j in range(self.height)]
         
         self.x_pos = 0
         self.y_pos = 0
