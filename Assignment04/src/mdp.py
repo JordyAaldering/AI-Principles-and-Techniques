@@ -27,7 +27,7 @@ class MDP():
         self.terminated = False
         self.actions_counter = 0
 
-    def perform_action(self, action: Action) -> float:
+    def try_action(self, action: Action) -> float:
         p = random.randrange(1.0)
         if self.deterministic or p < self.p_perform:
             pass # action = action
@@ -52,7 +52,8 @@ class MDP():
         x, y = action.get_dir()
         x += self.x_pos
         y += self.y_pos
-        return 0 <= x < self.width and 0 <= y < self.height and self.grid[x][y] != Field.OBSTACLE
+        return (0 <= x < self.width and 0 <= y < self.height
+            and self.grid[x][y] != Field.OBSTACLE)
 
     def get_reward(self) -> float:
         field = self.grid[self.x_pos][self.y_pos]
@@ -64,3 +65,8 @@ class MDP():
         elif field == Field.NEG_REWARD:
             self.terminated = True
             return self.neg_reward
+    
+    def __str__(self) -> str:
+        return "\n".join(
+            ["".join([x.value for x in row])
+                for row in self.grid])
