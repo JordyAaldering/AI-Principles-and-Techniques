@@ -1,8 +1,6 @@
 from mdp import MDP
-from policy import Policy
+from value_iter import ValueIter
 
 if __name__ == "__main__":
     mdp = MDP(10, 5)
-    policy = Policy(mdp)
-
     print("MDP:\n", mdp)

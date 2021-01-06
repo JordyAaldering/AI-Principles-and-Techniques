@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Field(Enum):
-	EMPTY = ' '
+	EMPTY = '_'
 	OBSTACLE = '#'
 	REWARD = '+'
 	NEG_REWARD = '-'
