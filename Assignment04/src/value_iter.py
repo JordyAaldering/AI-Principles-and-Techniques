@@ -90,13 +90,14 @@ class ValueIter():
 
     def move_is_valid(self, state, new_state):
         return (new_state in self.state_space and
+            self.grid[new_state] != Field.WALL and
             # check if a horizontal move ended up in a new row
             not (state % self.width == 0 and new_state % self.width == self.width - 1) and
             not (state % self.width == self.width - 1 and new_state % self.width == 0))
     
     def is_end_state(self, state):
         field = self.grid[state]
-        return field == Field.REWARD or field == Field.NEG_REWARD or field == Field.WALL
+        return field == Field.REWARD or field == Field.NEG_REWARD
     
     def __str__(self):
         s = ""

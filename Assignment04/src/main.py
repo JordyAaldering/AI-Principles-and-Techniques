@@ -1,5 +1,7 @@
 from field import Field
+from grid import GridWorld
 from value_iter import ValueIter
+from q_learning import QLearning
 
 if __name__ == "__main__":
     width, height = (5, 4)
@@ -14,3 +16,9 @@ if __name__ == "__main__":
     vi = ValueIter(width, height, grid)
     vi.iterate(0.8)
     print(vi)
+
+    env = GridWorld(width, height, grid)
+    ql = QLearning(env)
+    ql.play()
+
+    print(ql)
