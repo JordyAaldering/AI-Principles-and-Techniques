@@ -1,14 +1,15 @@
 from action import Action
-from grid import GridWorld
+from grid import Grid
 import numpy as np
+import random
 
 class QLearning():
     epsilon = 0.1
     alpha = 0.75
     gamma = 0.75
 
-    def __init__(self, grid: GridWorld):
-        self.env = grid
+    def __init__(self, grid: Grid):
+        self.grid = grid
         self.q_table = dict()
 
         for i in range(grid.width * grid.height):
@@ -19,54 +20,49 @@ class QLearning():
                 Action.LEFT: 0,
             }
     
-    def choose_action(self, available_actions):
-        if np.random.uniform(0, 1) < self.epsilon:
-            i = np.random.randint(0, len(available_actions))
-            action = available_actions[i]
+    def choose_action(self):
+        if random.uniform(0, 1) < self.epsilon:
+            i = random.randrange(0, 4)
+            return Action.as_list()[i]
         else:
-            q_vals_of_state = self.q_table[self.env.pos]
-            max_val = max(q_vals_of_state.values())
-            action = np.random.choice([k for k, v in q_vals_of_state.items() if v == max_val])
-        
-        return action
+            actions = self.q_table[self.grid.pos]
+            return max(actions, key=actions.get)
     
-    def learn(self, old_state, reward, new_state, action):
-        q_vals_of_state = self.q_table[new_state]
-        max_q_val = max(q_vals_of_state.values())
+    def learn(self, old_state, action, new_state, reward):
         old_q_val = self.q_table[old_state][action]
+        new_q_vals = self.q_table[new_state]
+        max_q_val = max(new_q_vals.values())
 
-        self.q_table[old_state][action] = (1 - self.alpha) * old_q_val + self.alpha * (reward + self.gamma * max_q_val)
+        self.q_table[old_state][action] = ((1 - self.alpha) * old_q_val
+            + self.alpha * (reward + self.gamma * max_q_val))
 
     def play(self, trials = 500, max_steps = 1000):
-        for trial in range(trials):
+        for _trial in range(trials):
             total_reward = 0
-            step = 0
-            game_over = False
-            
-            while step < max_steps and not game_over:
-                old_state = self.env.pos
-                action = self.choose_action(Action.as_list())
-                reward = self.env.make_step(action)
-                new_state = self.env.pos
 
-                self.learn(old_state, reward, new_state, action)
+            for _step in range(max_steps):
+                old_state = self.grid.pos
+                action = self.choose_action()
+                reward = self.grid.make_step(action)
+                new_state = self.grid.pos
+
+                self.learn(old_state, action, new_state, reward)
                 total_reward += reward
-                step += 1
 
-                if self.env.is_end_state(new_state):
-                    self.env = GridWorld(self.env.width, self.env.height, self.env.grid)
-                    game_over = True
+                if self.grid.is_end_state(new_state):
+                    self.grid.reset()
+                    break
 
     def __str__(self):
         s = ""
-        for i in range(self.env.width * self.env.height):
-            field = self.env.grid[i]
+        for i in range(self.grid.width * self.grid.height):
+            field = self.grid.grid[i]
             if field == field.EMPTY:
                 actions = self.q_table[i]
                 action = max(actions, key=actions.get)
                 s += str(action)
             else:
                 s += str(field)
-            if i % self.env.width == self.env.width - 1:
+            if i % self.grid.width == self.grid.width - 1:
                 s += "\n"
         return s

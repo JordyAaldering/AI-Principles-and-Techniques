@@ -16,10 +16,6 @@ class Action(Enum):
         elif self == Action.LEFT:
             return -1
 
-    @staticmethod
-    def as_list():
-        return [Action.UP, Action.RIGHT, Action.DOWN, Action.LEFT]
-
     def next_action(self):
         return Action((self.value + 1) % 4)
 
@@ -29,6 +25,10 @@ class Action(Enum):
     def back_action(self):
         return Action((self.value + 2) % 4)
     
+    @staticmethod
+    def as_list():
+        return [Action.UP, Action.RIGHT, Action.DOWN, Action.LEFT]
+
     def __str__(self):
         if self == Action.UP:
             return "U"
