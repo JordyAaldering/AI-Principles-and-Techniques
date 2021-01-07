@@ -20,5 +20,4 @@ if __name__ == "__main__":
     env = GridWorld(width, height, grid)
     ql = QLearning(env)
     ql.play()
-
     print(ql)
