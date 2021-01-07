@@ -1,4 +1,3 @@
-from action import Action
 from field import Field
 
 import random
@@ -31,7 +30,7 @@ class Grid():
         else:
             return self.no_reward
 
-    def make_step(self, action: Action):
+    def make_step(self, action):
         new_pos = self.pos + action.get_dir(self.width)
         reward = self.no_reward
 

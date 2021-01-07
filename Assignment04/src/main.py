@@ -19,4 +19,4 @@ if __name__ == "__main__":
 
     ql = QLearning(grid)
     ql.play()
-    print(ql)
+    ql.show_figure()

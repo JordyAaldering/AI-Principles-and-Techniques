@@ -64,7 +64,7 @@ class ValueIter():
             i = new_vs.index(max(new_vs))
             self.policy[state] = Action(i)
 
-    def show_figure(self):
+    def show_figure(self, save=True, show=False):
         colors = np.empty((self.grid.height, self.grid.width, 4))
         for i, field in enumerate(self.grid.grid):
             i = np.unravel_index(i, (self.grid.height, self.grid.width))
@@ -72,6 +72,7 @@ class ValueIter():
         
         plt.figure(figsize=(9,6))
         plt.imshow(colors)
+        plt.axis("off")
 
         for y in range(self.grid.height):
             for x in range(self.grid.width):
@@ -82,8 +83,10 @@ class ValueIter():
                     s = f"{self.policy[i]}\n{self.V[i]:.2f}"
                     plt.text(x, y, s, ha="center", va="center")
         
-        plt.axis("off")
-        plt.show()
+        if save:
+            plt.savefig("images/value_iter.png", bbox_inches="tight")
+        if show:
+            plt.show()
 
     def __str__(self):
         s = ""

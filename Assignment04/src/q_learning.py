@@ -1,6 +1,8 @@
 from action import Action
+from field import Field
 from grid import Grid
 
+import matplotlib.pyplot as plt
 import numpy as np
 import random
 
@@ -53,6 +55,32 @@ class QLearning():
                 if self.grid.is_end_state(new_state):
                     self.grid.reset_pos()
                     break
+
+    def show_figure(self, save=True, show=False):
+        colors = np.empty((self.grid.height, self.grid.width, 4))
+        for i, field in enumerate(self.grid.grid):
+            i = np.unravel_index(i, (self.grid.height, self.grid.width))
+            colors[i] = field.get_color()
+        
+        plt.figure(figsize=(9,6))
+        plt.imshow(colors)
+        plt.axis("off")
+
+        for y in range(self.grid.height):
+            for x in range(self.grid.width):
+                i = x + y * self.grid.width
+                field = self.grid.grid[i]
+
+                if field != Field.WALL and field != Field.REWARD and field != Field.NEG_REWARD:
+                    actions = self.q_table[i]
+                    action = max(actions, key=actions.get)
+                    s = f"{action}\n{actions[action]:.2f}"
+                    plt.text(x, y, s, ha="center", va="center")
+        
+        if save:
+            plt.savefig("images/q_learning.png", bbox_inches="tight")
+        if show:
+            plt.show()
 
     def __str__(self):
         s = ""
