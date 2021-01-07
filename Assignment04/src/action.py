@@ -6,15 +6,19 @@ class Action(Enum):
     DOWN = 2
     LEFT = 3
 
-    def get_dir(self):
+    def get_dir(self, width: int):
         if self == Action.UP:
-            return (0, 1)
+            return -width
         elif self == Action.RIGHT:
-            return (1, 0)
+            return 1
         elif self == Action.DOWN:
-            return (0, -1)
+            return width
         elif self == Action.LEFT:
-            return (-1, 0)
+            return -1
+
+    @staticmethod
+    def as_list():
+        return [Action.UP, Action.RIGHT, Action.DOWN, Action.LEFT]
 
     def next_action(self):
         return Action((self.value + 1) % 4)
@@ -24,3 +28,13 @@ class Action(Enum):
 
     def back_action(self):
         return Action((self.value + 2) % 4)
+    
+    def __str__(self):
+        if self == Action.UP:
+            return "U"
+        elif self == Action.RIGHT:
+            return "R"
+        elif self == Action.DOWN:
+            return "D"
+        elif self == Action.LEFT:
+            return "L"
