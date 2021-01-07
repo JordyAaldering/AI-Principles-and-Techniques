@@ -13,7 +13,7 @@ class Action(Enum):
             return 1
         elif self == Action.DOWN:
             return width
-        elif self == Action.LEFT:
+        else: # self == Action.LEFT
             return -1
 
     def next_action(self):

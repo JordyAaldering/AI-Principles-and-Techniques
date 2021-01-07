@@ -1,7 +1,7 @@
 from action import Action
 from field import Field
-from grid import Grid
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 class ValueIter():
@@ -12,7 +12,7 @@ class ValueIter():
     p_sidestep = 0.2
     p_backstep = 0.1
 
-    def __init__(self, grid: Grid):
+    def __init__(self, grid):
         self.grid = grid
         self.state_space = list(range(grid.size))
 
@@ -63,6 +63,27 @@ class ValueIter():
             
             i = new_vs.index(max(new_vs))
             self.policy[state] = Action(i)
+
+    def show_figure(self):
+        colors = np.empty((self.grid.height, self.grid.width, 4))
+        for i, field in enumerate(self.grid.grid):
+            i = np.unravel_index(i, (self.grid.height, self.grid.width))
+            colors[i] = field.get_color()
+        
+        plt.figure(figsize=(9,6))
+        plt.imshow(colors)
+
+        for y in range(self.grid.height):
+            for x in range(self.grid.width):
+                i = x + y * self.grid.width
+                field = self.grid.grid[i]
+
+                if field != Field.WALL and field != Field.REWARD and field != Field.NEG_REWARD:
+                    s = f"{self.policy[i]}\n{self.V[i]:.2f}"
+                    plt.text(x, y, s, ha="center", va="center")
+        
+        plt.axis("off")
+        plt.show()
 
     def __str__(self):
         s = ""

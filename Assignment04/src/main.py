@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     vi = ValueIter(grid)
     vi.iterate()
-    print(vi)
+    vi.show_figure()
 
     ql = QLearning(grid)
     ql.play()
