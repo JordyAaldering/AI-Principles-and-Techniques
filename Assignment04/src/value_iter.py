@@ -1,4 +1,3 @@
-from grid import Grid
 from field import Field
 from action import Action
 import numpy as np
@@ -24,26 +23,28 @@ class ValueIter():
     neg_reward = -1.0
     no_reward = -0.04
 
-    def __init__(self, grid: Grid):
+    def __init__(self, width, height, grid: [Field]):
+        self.width = width
+        self.height = height
+        size = width * height
+
         self.grid = grid
-        self.width = grid.width
-        self.height = grid.height
-        self.state_space = list(range(grid.size))
+        self.state_space = list(range(size))
 
         self.Q = {}
-        self.V = [0] * grid.size
-        self.policy = np.full(grid.size, Action.UP)
+        self.V = [0] * size
+        self.policy = np.full(size, Action.UP)
 
         for state in self.state_space:
             for action in Action.as_list():
-                new_state = state + action.get_dir(self.width)
+                new_state = state + action.get_dir(width)
                 reward = self.no_reward
 
                 if not self.move_is_valid(state, new_state):
                     new_state = state # revert to the previous state
-                elif self.grid.values[new_state] == Field.REWARD:
+                elif self.grid[new_state] == Field.REWARD:
                     reward = self.pos_reward
-                elif self.grid.values[new_state] == Field.NEG_REWARD:
+                elif self.grid[new_state] == Field.NEG_REWARD:
                     reward = self.neg_reward
                 
                 self.Q[(state, action)] = (new_state, reward)
@@ -94,12 +95,12 @@ class ValueIter():
             not (state % self.width == self.width - 1 and new_state % self.width == 0))
     
     def is_end_state(self, state):
-        field = self.grid.values[state]
+        field = self.grid[state]
         return field == Field.REWARD or field == Field.NEG_REWARD or field == Field.WALL
     
     def __str__(self):
         s = ""
-        for i, field in enumerate(self.grid.values):
+        for i, field in enumerate(self.grid):
             if field == field.EMPTY:
                 s += str(self.policy[i])
             else:
