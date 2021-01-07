@@ -11,10 +11,10 @@ class QLearning():
     alpha = 0.75
     gamma = 0.75
 
-    def __init__(self, grid: Grid):
+    def __init__(self, grid):
         self.grid = grid
+        
         self.q_table = {}
-
         for i in range(grid.width * grid.height):
             self.q_table[i] = {
                 Action.UP: 0,
@@ -39,7 +39,7 @@ class QLearning():
         self.q_table[old_state][action] = ((1 - self.alpha) * old_q_val
             + self.alpha * (reward + self.gamma * max_q_val))
 
-    def play(self, trials = 500, max_steps = 1000):
+    def play(self, trials=500, max_steps=1000):
         for _trial in range(trials):
             total_reward = 0
 
