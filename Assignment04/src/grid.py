@@ -1,5 +1,6 @@
 from action import Action
 from field import Field
+
 import random
 
 class Grid():
@@ -7,14 +8,14 @@ class Grid():
     neg_reward = -1.0
     no_reward = -0.04
 
-    def __init__(self, width, height, grid: [Field]):
+    def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.grid = grid
+        self.grid = [Field.EMPTY] * self.size
 
-        self.pos = random.randrange(0, self.size)
+        self.reset_pos()
     
-    def reset(self):
+    def reset_pos(self):
         self.pos = random.randrange(0, self.size)
 
     @property
@@ -34,7 +35,7 @@ class Grid():
         new_pos = self.pos + action.get_dir(self.width)
         reward = self.no_reward
 
-        if self.move_is_valid(new_pos):
+        if self.move_is_valid(self.pos, new_pos):
             self.pos = new_pos
             if self.grid[new_pos] == Field.REWARD:
                 reward = self.pos_reward
@@ -43,12 +44,12 @@ class Grid():
         
         return reward
     
-    def move_is_valid(self, new_pos):
+    def move_is_valid(self, pos, new_pos):
         return (0 <= new_pos < self.width * self.height and
             self.grid[new_pos] != Field.WALL and
             # check if a horizontal move ended up in a new row
-            not (self.pos % self.width == 0 and new_pos % self.width == self.width - 1) and
-            not (self.pos % self.width == self.width - 1 and new_pos % self.width == 0))
+            not (pos % self.width == 0 and new_pos % self.width == self.width - 1) and
+            not (pos % self.width == self.width - 1 and new_pos % self.width == 0))
 
     def is_end_state(self, pos):
         field = self.grid[pos]

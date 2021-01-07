@@ -5,19 +5,18 @@ from q_learning import QLearning
 
 if __name__ == "__main__":
     width, height = (5, 4)
-    grid = [Field.EMPTY] * width * height
-    grid[7] = Field.WALL
-    grid[10] = Field.NEG_REWARD
-    grid[13] = Field.WALL
-    grid[14] = Field.WALL
-    grid[15] = Field.WALL
-    grid[19] = Field.REWARD
+    grid = Grid(width, height)
+    grid.grid[7] = Field.WALL
+    grid.grid[10] = Field.NEG_REWARD
+    grid.grid[13] = Field.WALL
+    grid.grid[14] = Field.WALL
+    grid.grid[15] = Field.WALL
+    grid.grid[19] = Field.REWARD
 
-    vi = ValueIter(width, height, grid)
-    vi.iterate(0.8)
+    vi = ValueIter(grid)
+    vi.iterate()
     print(vi)
 
-    env = Grid(width, height, grid)
-    ql = QLearning(env)
+    ql = QLearning(grid)
     ql.play()
     print(ql)

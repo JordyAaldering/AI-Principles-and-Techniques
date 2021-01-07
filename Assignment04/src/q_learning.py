@@ -1,5 +1,6 @@
 from action import Action
 from grid import Grid
+
 import numpy as np
 import random
 
@@ -10,7 +11,7 @@ class QLearning():
 
     def __init__(self, grid: Grid):
         self.grid = grid
-        self.q_table = dict()
+        self.q_table = {}
 
         for i in range(grid.width * grid.height):
             self.q_table[i] = {
@@ -50,7 +51,7 @@ class QLearning():
                 total_reward += reward
 
                 if self.grid.is_end_state(new_state):
-                    self.grid.reset()
+                    self.grid.reset_pos()
                     break
 
     def __str__(self):
