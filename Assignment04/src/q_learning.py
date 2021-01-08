@@ -9,7 +9,6 @@ import random
 class QLearning():
     epsilon = 0.1
     alpha = 0.75
-    gamma = 0.75
 
     def __init__(self, grid):
         self.grid = grid
@@ -37,7 +36,7 @@ class QLearning():
         max_q_val = max(new_q_vals.values())
 
         self.q_table[old_state][action] = ((1 - self.alpha) * old_q_val
-            + self.alpha * (reward + self.gamma * max_q_val))
+            + self.alpha * (reward + self.grid.gamma * max_q_val))
 
     def iterate(self, trials=500, max_steps=1000):
         for _trial in range(trials):

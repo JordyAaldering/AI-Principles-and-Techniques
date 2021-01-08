@@ -6,6 +6,8 @@ class Grid():
     p_perform = 0.7
     p_sidestep = 0.2
     p_backstep = 0.1
+    
+    gamma = 0.75
 
     pos_reward = 1.0
     neg_reward = -1.0

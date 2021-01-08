@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class ValueIter():
-    gamma = 0.75
     delta = 1e-10
 
     def __init__(self, grid):
@@ -36,16 +35,16 @@ class ValueIter():
 
                 for i, action in enumerate(Action.as_list()):
                     new_state, reward = self.Q.get((state, action))
-                    new_vs[i] += self.grid.p_perform * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_perform * (reward + self.grid.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.next_action()))
-                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.grid.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.prev_action()))
-                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.grid.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.back_action()))
-                    new_vs[i] += self.grid.p_backstep * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_backstep * (reward + self.grid.gamma * self.V[new_state])
                 
                 self.V[state] = max(new_vs)
                 max_delta = max(max_delta, np.abs(old_v - self.V[state]))
@@ -55,7 +54,7 @@ class ValueIter():
             new_vs = [0, 0, 0, 0]
             for i, action in enumerate(Action.as_list()):
                 new_state, reward = self.Q.get((state, action))
-                new_vs[i] = reward + self.gamma * self.V[new_state]
+                new_vs[i] = reward + self.grid.gamma * self.V[new_state]
             
             i = new_vs.index(max(new_vs))
             self.policy[state] = Action(i)

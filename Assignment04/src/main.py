@@ -41,9 +41,10 @@ if __name__ == "__main__":
         grid.gamma = gamma
         validate_algs(grid, f"gamma-{gamma}")
 
-    for no_reward in [0.0, -0.01, -0.1]:
+    for no_reward in [0.0, -0.1, -0.3]:
         grid = Grid.from_string(large)
         grid.no_reward = no_reward
+        grid.gamma = 0.25
         validate_algs(grid, f"noreward-{abs(no_reward)}")
     
     for ps in [[0.8, 0.15, 0.05], [0.5, 0.35, 0.15]]:
