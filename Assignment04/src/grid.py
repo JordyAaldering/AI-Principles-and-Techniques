@@ -52,6 +52,19 @@ class Grid():
         else:
             return self.no_reward
 
+    def try_step(self, action):
+        p = random.uniform(0.0, 1.0)
+        if p < self.p_perform:
+            pass # action = action
+        elif p < self.p_perform + self.p_sidestep / 2:
+            action = action.next_action()
+        elif p < self.p_perform + self.p_sidestep:
+            action = action.prev_action()
+        else: # p < self.p_perform + self.p_sidestep + self.backstep
+            action = action.back_action()
+
+        return self.make_step(action)
+
     def make_step(self, action):
         new_pos = self.pos + action.get_dir(self.width)
         reward = self.no_reward

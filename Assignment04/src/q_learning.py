@@ -46,7 +46,7 @@ class QLearning():
             for _step in range(max_steps):
                 old_state = self.grid.pos
                 action = self.choose_action()
-                reward = self.grid.make_step(action)
+                reward = self.grid.try_step(action)
                 new_state = self.grid.pos
 
                 self.learn(old_state, action, new_state, reward)
