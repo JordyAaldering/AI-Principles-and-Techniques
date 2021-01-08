@@ -40,8 +40,8 @@ class QLearning():
 
     def iterate(self, trials=500, max_steps=1000):
         for _trial in range(trials):
-            total_reward = 0
-
+            self.grid.reset_pos()
+            
             for _step in range(max_steps):
                 old_state = self.grid.pos
                 action = self.choose_action()
@@ -49,10 +49,8 @@ class QLearning():
                 new_state = self.grid.pos
 
                 self.learn(old_state, action, new_state, reward)
-                total_reward += reward
 
                 if self.grid.is_end_state(new_state):
-                    self.grid.reset_pos()
                     break
 
     def make_figure(self, title, save=True, show=False):
