@@ -35,6 +35,8 @@ if __name__ == "__main__":
     validate_algs(grid, "grid-small")
     grid = Grid.from_string(large)
     validate_algs(grid, "grid-large")
+    grid = Grid.from_string(large, no_walls=True)
+    validate_algs(grid, "grid-large-nowalls")
 
     for gamma in [1.0, 0.9, 0.1]:
         grid = Grid.from_string(large)

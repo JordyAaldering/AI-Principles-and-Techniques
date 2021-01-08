@@ -21,7 +21,7 @@ class Grid():
         self.reset_pos()
     
     @classmethod
-    def from_string(cls, s):
+    def from_string(cls, s, no_walls=False):
         lines = s.split("\n")
         lines = list(filter(None, lines))
 
@@ -33,6 +33,8 @@ class Grid():
         for row in lines:
             for c in row:
                 field = Field(c)
+                if no_walls and field == Field.WALL:
+                    field = field.EMPTY
                 grid.grid[i] = field
                 i += 1
         
