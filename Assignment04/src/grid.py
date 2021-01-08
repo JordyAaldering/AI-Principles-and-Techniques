@@ -14,6 +14,24 @@ class Grid():
 
         self.reset_pos()
     
+    @classmethod
+    def from_string(cls, s):
+        lines = s.split("\n")
+        lines = list(filter(None, lines))
+
+        width = len(lines[0])
+        height = len(lines)
+        grid = cls(width, height)
+
+        i = 0
+        for row in lines:
+            for c in row:
+                field = Field(c)
+                grid.grid[i] = field
+                i += 1
+        
+        return grid
+
     def reset_pos(self):
         self.pos = random.randrange(0, self.size)
 

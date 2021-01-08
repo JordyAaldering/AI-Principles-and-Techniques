@@ -3,20 +3,33 @@ from grid import Grid
 from value_iter import ValueIter
 from q_learning import QLearning
 
-if __name__ == "__main__":
-    width, height = (5, 4)
-    grid = Grid(width, height)
-    grid.grid[7] = Field.WALL
-    grid.grid[10] = Field.NEG_REWARD
-    grid.grid[13] = Field.WALL
-    grid.grid[14] = Field.WALL
-    grid.grid[15] = Field.WALL
-    grid.grid[19] = Field.REWARD
+small = """
+___+
+_#_-
+____
+"""
 
-    vi = ValueIter(grid)
+large = """
+__________
+_###__##__
+_#+___##__
+_#____##__
+______##__
+_#________
+____-_____
+__#####___
+___-_+____
+__________
+"""
+
+if __name__ == "__main__":
+    grid_small = Grid.from_string(small)
+    grid_large = Grid.from_string(large)
+
+    vi = ValueIter(grid_large)
     vi.iterate()
     vi.show_figure()
 
-    ql = QLearning(grid)
+    ql = QLearning(grid_large)
     ql.play()
     ql.show_figure()
