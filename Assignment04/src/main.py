@@ -1,4 +1,3 @@
-from field import Field
 from grid import Grid
 from value_iter import ValueIter
 from q_learning import QLearning
@@ -22,14 +21,34 @@ ___-_+____
 __________
 """
 
-if __name__ == "__main__":
-    grid_small = Grid.from_string(small)
-    grid_large = Grid.from_string(large)
-
-    vi = ValueIter(grid_large)
+def validate_algs(grid, title):
+    vi = ValueIter(grid)
     vi.iterate()
-    vi.show_figure()
+    vi.make_figure(title)
 
-    ql = QLearning(grid_large)
+    ql = QLearning(grid)
     ql.iterate()
-    ql.show_figure()
+    ql.make_figure(title)
+
+if __name__ == "__main__":
+    grid = Grid.from_string(small)
+    validate_algs(grid, "grid-small")
+    grid = Grid.from_string(large)
+    validate_algs(grid, "grid-large")
+
+    for gamma in [1.0, 0.9, 0.1]:
+        grid = Grid.from_string(large)
+        grid.gamma = gamma
+        validate_algs(grid, f"gamma-{gamma}")
+
+    for no_reward in [0.0, -0.01, -0.1]:
+        grid = Grid.from_string(large)
+        grid.no_reward = no_reward
+        validate_algs(grid, f"noreward-{abs(no_reward)}")
+    
+    for ps in [[0.8, 0.15, 0.05], [0.5, 0.35, 0.15]]:
+        grid = Grid.from_string(large)
+        grid.p_perform = ps[0]
+        grid.p_sidestep = ps[1]
+        grid.p_backstep = ps[2]
+        validate_algs(grid, f"ps-{ps[0]}-{ps[1]}-{ps[2]}")

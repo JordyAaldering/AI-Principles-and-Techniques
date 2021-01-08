@@ -56,7 +56,7 @@ class QLearning():
                     self.grid.reset_pos()
                     break
 
-    def show_figure(self, save=True, show=False):
+    def make_figure(self, title, save=True, show=False):
         colors = np.empty((self.grid.height, self.grid.width, 4))
         for i, field in enumerate(self.grid.grid):
             i = np.unravel_index(i, (self.grid.height, self.grid.width))
@@ -78,7 +78,7 @@ class QLearning():
                     plt.text(x, y, s, ha="center", va="center")
         
         if save:
-            plt.savefig("images/q_learning.png", bbox_inches="tight")
+            plt.savefig(f"images/q_learning/{title}.png", bbox_inches="tight")
         if show:
             plt.show()
 

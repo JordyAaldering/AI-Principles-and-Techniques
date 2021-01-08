@@ -8,10 +8,6 @@ class ValueIter():
     gamma = 0.75
     delta = 1e-10
 
-    p_perform = 0.7
-    p_sidestep = 0.2
-    p_backstep = 0.1
-
     def __init__(self, grid):
         self.grid = grid
         self.state_space = list(range(grid.size))
@@ -40,16 +36,16 @@ class ValueIter():
 
                 for i, action in enumerate(Action.as_list()):
                     new_state, reward = self.Q.get((state, action))
-                    new_vs[i] += self.p_perform * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_perform * (reward + self.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.next_action()))
-                    new_vs[i] += self.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.prev_action()))
-                    new_vs[i] += self.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_sidestep / 2 * (reward + self.gamma * self.V[new_state])
 
                     new_state, reward = self.Q.get((state, action.back_action()))
-                    new_vs[i] += self.p_backstep * (reward + self.gamma * self.V[new_state])
+                    new_vs[i] += self.grid.p_backstep * (reward + self.gamma * self.V[new_state])
                 
                 self.V[state] = max(new_vs)
                 max_delta = max(max_delta, np.abs(old_v - self.V[state]))
@@ -64,7 +60,7 @@ class ValueIter():
             i = new_vs.index(max(new_vs))
             self.policy[state] = Action(i)
 
-    def show_figure(self, save=True, show=False):
+    def make_figure(self, title, save=True, show=False):
         colors = np.empty((self.grid.height, self.grid.width, 4))
         for i, field in enumerate(self.grid.grid):
             i = np.unravel_index(i, (self.grid.height, self.grid.width))
@@ -84,7 +80,7 @@ class ValueIter():
                     plt.text(x, y, s, ha="center", va="center")
         
         if save:
-            plt.savefig("images/value_iter.png", bbox_inches="tight")
+            plt.savefig(f"images/value_iter/{title}.png", bbox_inches="tight")
         if show:
             plt.show()
 
