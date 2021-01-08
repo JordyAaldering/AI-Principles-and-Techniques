@@ -31,5 +31,5 @@ if __name__ == "__main__":
     vi.show_figure()
 
     ql = QLearning(grid_large)
-    ql.play()
+    ql.iterate()
     ql.show_figure()

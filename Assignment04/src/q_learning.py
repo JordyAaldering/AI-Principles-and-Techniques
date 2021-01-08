@@ -39,7 +39,7 @@ class QLearning():
         self.q_table[old_state][action] = ((1 - self.alpha) * old_q_val
             + self.alpha * (reward + self.gamma * max_q_val))
 
-    def play(self, trials=500, max_steps=1000):
+    def iterate(self, trials=500, max_steps=1000):
         for _trial in range(trials):
             total_reward = 0
 
