@@ -12,16 +12,14 @@ class BayesNet():
         variables = list(self.net.keys())
         variables.sort()
         
-        vars_sorted = []
+        vars_sorted = set()
         while len(vars_sorted) < len(variables):
             for v in variables:
-                if v in vars_sorted:
-                    continue
                 if all(parent in vars_sorted for parent in self.net[v]["parents"]):
-                    vars_sorted.append(v)
+                    vars_sorted.add(v)
         
-        print("Variables topologically sorted:", vars_sorted)
-        return vars_sorted
+        print("Variables topologically sorted:", list(vars_sorted))
+        return list(vars_sorted)
     
     def probability(self, var, evidence):
         parents = self.net[var]["parents"]
@@ -36,12 +34,11 @@ class BayesNet():
         return prob
     
     def get_permutations(self, size):
-        permutations = []
+        permutations = set()
         for comb in itertools.combinations_with_replacement([True, False], size):
             for perm in itertools.permutations(comb):
-                if perm not in permutations:
-                    permutations.append(perm)
-        return permutations
+                permutations.add(perm)
+        return list(permutations)
 
     def make_factor(self, var, factors, evidence):
         variables = factors[var]
@@ -77,3 +74,32 @@ class BayesNet():
 
     def factor_sumout(self, var, factors):
         pass
+
+    def eliminate(self, var, evidence):
+        eliminated = set()
+        factors = []
+
+        while len(eliminated) < len(self.net):
+            variables = [v for v in list(self.net.keys()) if v not in eliminated]
+            variables = [v for v in variables if all(c in eliminated for c in self.net[v]["children"])]
+
+            factor_vars = {}
+            for v in variables:
+                factor_vars[v] = [p for p in self.net[v]["parents"] if p not in evidence]
+                if v not in evidence:
+                    factor_vars[v].append(v)
+            
+            v = sorted(factor_vars.keys(), key=(lambda x: (len(factor_vars[x]), x)))[0]
+            if len(factor_vars[v]) > 0:
+                factors.append(self.make_factor(v, factor_vars, evidence))
+            
+            if v != var and v not in evidence:
+                factors = self.factor_sumout(v, factors)
+
+            eliminated.add(v)
+
+        result = factors[0]
+        if len(factors) >= 2:
+            for f in factors[1:]:
+                result = self.factor_pointwise(var, result, f)
+        return result
