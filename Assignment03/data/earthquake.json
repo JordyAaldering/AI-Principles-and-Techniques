@@ -1,0 +1,38 @@
+{
+  "Burglary": {
+    "parents": [],
+    "children": ["Alarm"],
+    "prob": 0.01
+  },
+  "Earthquake": {
+    "parents": [],
+    "children": ["Alarm"],
+    "prob": 0.02
+  },
+  "Alarm": {
+    "parents": ["Burglary", "Earthquake"],
+    "children": ["JohnCalls", "MaryCalls"],
+    "prob": {
+      "[True, True]": 0.95,
+      "[True, False]": 0.94,
+      "[False, True]": 0.29,
+      "[False, False]": 0.001
+    }
+  },
+  "JohnCalls": {
+    "parents": ["Alarm"],
+    "children": [],
+    "prob": {
+      "[True]": 0.9,
+      "[Talse]": 0.05
+    }
+  },
+  "MaryCalls": {
+    "parents": ["Alarm"],
+    "children": [],
+    "prob": {
+      "[True]": 0.7,
+      "[Talse]": 0.01
+    }
+  }
+}
