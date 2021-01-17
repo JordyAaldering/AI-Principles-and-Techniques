@@ -8,4 +8,4 @@ if __name__ == '__main__':
 
     result = net.eliminate(query, evidence)
     for prob, val in zip(result, [True, False]):
-        print(f"P({query}={val} | {evidence}) = {prob}")
+        print(f"P({query}={val} | {evidence}) = {prob:.3f}")

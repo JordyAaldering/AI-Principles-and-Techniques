@@ -1,40 +1,24 @@
 import itertools
 import json
 
+def get_permutations(size):
+    permutations = set()
+    for comb in itertools.combinations_with_replacement([True, False], size):
+        for perm in itertools.permutations(comb):
+            permutations.add(perm)
+    return list(permutations)
+
 class BayesNet():
     def __init__(self, path):
         with open(path) as f:
             self.net = json.load(f)
 
-    def sort_topological(self):
-        variables = list(self.net.keys())
-        variables.sort()
-        
-        vars_sorted = set()
-        while len(vars_sorted) < len(variables):
-            for v in variables:
-                if all(parent in vars_sorted for parent in self.net[v]["parents"]):
-                    vars_sorted.add(v)
-        
-        return list(vars_sorted)
-    
     def probability(self, var, evidence):
         parents = self.net[var]["parents"]
-        if len(parents) == 0:
-            prob = self.net[var]["prob"]
-        else:
-            key = str([evidence[p] for p in parents])
-            prob = self.net[var]["prob"][key]
-        
+        key = str([evidence[p] for p in parents])
+        prob = self.net[var]["prob"][key]
         return prob if evidence[var] else 1 - prob
     
-    def get_permutations(self, size):
-        permutations = set()
-        for comb in itertools.combinations_with_replacement([True, False], size):
-            for perm in itertools.permutations(comb):
-                permutations.add(perm)
-        return list(permutations)
-
     def make_factor(self, var, factors, evidence):
         variables = factors[var]
         variables.sort()
@@ -44,7 +28,7 @@ class BayesNet():
 
         asg = {}
         entries = {}
-        for perm in self.get_permutations(len(parents)):
+        for perm in get_permutations(len(parents)):
             violate = False
             for key, val in zip(parents, perm):
                 if key in evidence and evidence[key] != val:
@@ -69,7 +53,7 @@ class BayesNet():
 
         asg = {}
         table = {}
-        for perm in self.get_permutations(len(new_vars)):
+        for perm in get_permutations(len(new_vars)):
             for key, val in zip(new_vars, perm):
                 asg[key] = val
             
@@ -147,10 +131,8 @@ class BayesNet():
             eliminated.add(v)
 
         result = factors[0]
-        if len(factors) >= 2:
-            for f in factors[1:]:
-                result = self.factor_pointwise(var, result, f)
+        for f in factors[1:]:
+            result = self.factor_pointwise(var, result, f)
         
-        normalize = lambda dist: tuple(x * 1 / sum(dist) for x in dist)
-        normalized = normalize((result[1][(False,)], result[1][(True,)]))
-        return normalized
+        dist = result[1][(False,)], result[1][(True,)]
+        return tuple(x * 1 / sum(dist) for x in dist)

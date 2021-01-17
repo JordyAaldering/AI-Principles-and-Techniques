@@ -2,12 +2,16 @@
   "Burglary": {
     "parents": [],
     "children": ["Alarm"],
-    "prob": 0.01
+    "prob": {
+      "[]": 0.01
+    }
   },
   "Earthquake": {
     "parents": [],
     "children": ["Alarm"],
-    "prob": 0.02
+    "prob": {
+      "[]": 0.02
+    }
   },
   "Alarm": {
     "parents": ["Burglary", "Earthquake"],
