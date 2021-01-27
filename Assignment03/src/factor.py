@@ -1,5 +1,5 @@
-import itertools
 from copy import deepcopy
+import itertools
 
 def get_permutations(size):
     permutations = set()

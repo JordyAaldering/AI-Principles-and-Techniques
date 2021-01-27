@@ -6,13 +6,12 @@ def print_result(query, evidence, result):
         print(f"P({query}={val} | {evidence}) = {prob:.3f}")
 
 if __name__ == "__main__":
-    net = BayesNet("data/earthquake.json")
-
     query = "Alarm"
     evidence = {
         "Burglary": True,
         "Earthquake": False
     }
 
+    net = BayesNet("data/earthquake.json")
     result = net.eliminate(query, evidence)
     print_result(query, evidence, result)
