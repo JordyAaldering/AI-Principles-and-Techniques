@@ -11,11 +11,8 @@ def get_permutations(size):
 class Factor():
     @staticmethod
     def make(bayes_net, var, factors, evidence):
-        variables = factors[var]
-        variables.sort()
-
-        parents = deepcopy(bayes_net.net[var]["parents"])
-        parents.append(var)
+        variables = sorted(factors[var])
+        parents = deepcopy(bayes_net.net[var]["parents"]) + [var]
 
         asg = {}
         entries = {}
@@ -37,8 +34,7 @@ class Factor():
     def pointwise(var, factor1, factor2):
         new_vars = set(factor1[0])
         new_vars.update(factor2[0])
-        new_vars = list(new_vars)
-        new_vars.sort()
+        new_vars = sorted(list(new_vars))
 
         asg = {}
         table = {}
