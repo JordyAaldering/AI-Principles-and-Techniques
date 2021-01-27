@@ -1,4 +1,5 @@
 import itertools
+from copy import deepcopy
 
 def get_permutations(size):
     permutations = set()
@@ -13,21 +14,19 @@ class Factor():
         variables = factors[var]
         variables.sort()
 
-        parents = [p for p in bayes_net.net[var]["parents"]]
+        parents = deepcopy(bayes_net.net[var]["parents"])
         parents.append(var)
 
         asg = {}
         entries = {}
         for perm in get_permutations(len(parents)):
-            violate = False
             for key, val in zip(parents, perm):
                 if key in evidence and evidence[key] != val:
-                    violate = True
                     break
 
                 asg[key] = val
             
-            if not violate:
+            else: # the inner for loop has not been broken
                 key = tuple(asg[v] for v in variables)
                 prob = bayes_net.probability(var, asg)
                 entries[key] = prob
@@ -36,10 +35,9 @@ class Factor():
 
     @staticmethod
     def pointwise(var, factor1, factor2):
-        new_vars = []
-        new_vars.extend(factor1[0])
-        new_vars.extend(factor2[0])
-        new_vars = list(set(new_vars))
+        new_vars = set(factor1[0])
+        new_vars.update(factor2[0])
+        new_vars = list(new_vars)
         new_vars.sort()
 
         asg = {}
@@ -80,7 +78,7 @@ class Factor():
                 if v == var:
                     newvariables = factor[0][:j] + factor[0][j+1:]
 
-                    newentries = {}
+                    new_entries = {}
                     for entry in factor[1]:
                         entry = list(entry)
                         newkey = tuple(entry[:j] + entry[j+1:])
@@ -91,9 +89,9 @@ class Factor():
                         prob2 = factor[1][tuple(entry)]
                         prob = prob1 + prob2
                         
-                        newentries[newkey] = prob
+                        new_entries[newkey] = prob
 
-                    factors[i] = (newvariables, newentries)
+                    factors[i] = (newvariables, new_entries)
                     if len(newvariables) == 0:
                         del factors[i]
         
