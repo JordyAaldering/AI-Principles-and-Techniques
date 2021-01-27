@@ -1,4 +1,3 @@
-from util import get_permutations
 from factor import Factor
 import json
 
