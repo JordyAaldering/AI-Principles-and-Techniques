@@ -1,11 +1,18 @@
 from bayes_net import BayesNet
 
-if __name__ == '__main__':
+def print_result(query, evidence, result):
+    evidence = ", ".join([f"{e}={evidence[e]}" for e in evidence])
+    for prob, val in zip(result, [True, False]):
+        print(f"P({query}={val} | {evidence}) = {prob:.3f}")
+
+if __name__ == "__main__":
     net = BayesNet("data/earthquake.json")
 
     query = "Alarm"
-    evidence = {"Burglary": True, "Earthquake": False}
+    evidence = {
+        "Burglary": True,
+        "Earthquake": False
+    }
 
     result = net.eliminate(query, evidence)
-    for prob, val in zip(result, [True, False]):
-        print(f"P({query}={val} | {evidence}) = {prob:.3f}")
+    print_result(query, evidence, result)
