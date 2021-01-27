@@ -85,7 +85,7 @@ class Factor():
 
                     for entry in factor[1]:
                         entry = list(entry)
-                        newkey = tuple(entry[:j] + entry[j+1:])
+                        new_key = tuple(entry[:j] + entry[j+1:])
 
                         entry[j] = True
                         prob1 = factor[1][tuple(entry)]
@@ -93,7 +93,7 @@ class Factor():
                         prob2 = factor[1][tuple(entry)]
                         prob = prob1 + prob2
                         
-                        new_entries[newkey] = prob
+                        new_entries[new_key] = prob
 
                     # replace the old factor
                     factors[i] = (new_variables, new_entries)
